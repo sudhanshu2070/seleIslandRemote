@@ -9,6 +9,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class WebDriverUtil {
 
     public static WebDriver getWebDriver() {
+        
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();

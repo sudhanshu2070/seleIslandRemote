@@ -29,21 +29,36 @@
     require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@0.37.1/min/vs' }});
     require(['vs/editor/editor.main'], function() {
       const editor = monaco.editor.create(document.getElementById('editor'), {
-        value: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}`,
+        value: `public class Main {
+                    public static void main(String[] args) {
+                    WebDriver driver = WebDriverUtil.getWebDriver();
+                    
+                    try {
+                        driver.get("https://www.google.com");
+                        System.out.println("Page Title: " + driver.getTitle());
+                    } finally {
+                            driver.quit();
+                        }
+                    }
+                }`,
         language: 'java'
       });
 
       document.getElementById('runButton').addEventListener('click', async () => {
         const code = editor.getValue(); // Get the code from the editor
-        const response = await fetch('/execute', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code })
-        });
-        const result = await response.json();
-        document.getElementById('output').innerText = result.output;
+        try {
+          const response = await fetch('/execute', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code }) // Wrap the code in a JSON object
+          });
+          const result = await response.text();
+          document.getElementById('output').innerText = result || "No output.";
+        } catch (error) {
+            const text = await error?.response?.text?.();
+            document.getElementById('output').innerText = "Error: " + (text || error.message);        }
       });
     });
-  </script>
+</script>
 </body>
 </html>

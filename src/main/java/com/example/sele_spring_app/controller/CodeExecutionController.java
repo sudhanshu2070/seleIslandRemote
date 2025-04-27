@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sele_spring_app.model.CodeRequest;
-import com.example.sele_spring_app.model.ExecutionResponse;
 import com.example.sele_spring_app.service.CodeExecutionService;
 
 @RestController
@@ -18,12 +17,19 @@ public class CodeExecutionController {
     private CodeExecutionService codeExecutionService;
 
     @PostMapping
-    public ExecutionResponse executeCode(@RequestBody CodeRequest request) {
+    // public ExecutionResponse executeCode(@RequestBody CodeRequest request) {
+    public String executeCode(@RequestBody CodeRequest request) {
+        // try {
+        //     String output = codeExecutionService.compileAndExecute(request.getCode());
+        //     return new ExecutionResponse(output);
+        // } catch (Exception e) {
+        //     return new ExecutionResponse("Error: " + e.getMessage());
+        // }
+
         try {
-            String output = codeExecutionService.compileAndExecute(request.getCode());
-            return new ExecutionResponse(output);
+            return codeExecutionService.compileAndExecute(request.getCode());
         } catch (Exception e) {
-            return new ExecutionResponse("Error: " + e.getMessage());
+            return "Error: " + e.getMessage();
         }
     }
 }
