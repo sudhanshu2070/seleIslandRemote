@@ -12,7 +12,7 @@ public class WebDriverUtil {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // Run in headless mode
+        // options.addArguments("--headless"); // headless mode(for getting that in background)
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
 
